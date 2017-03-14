@@ -1,4 +1,4 @@
-# Stateless NGINX for Docker [![](https://images.microbadger.com/badges/image/thedrhax/nginx-stateless.svg)](https://hub.docker.com/r/thedrhax/environmental-nginx)
+# Stateless NGINX for Docker [![](https://images.microbadger.com/badges/image/thedrhax/nginx-stateless.svg)](https://hub.docker.com/r/thedrhax/nginx-stateless)
 
 This image can be configured by modifying environment variables at container startup. Feel free to contribute ;)
 
@@ -45,31 +45,31 @@ CONFIG_LOCATION_...=""
 ### Static content only
 
 ```
-docker run -it --rm -v www:/var/www/html -p 80:80 thedrhax/environmental-nginx
+docker run -it --rm -v www:/var/www/html -p 80:80 thedrhax/nginx-stateless
 ```
 
 ### Static content with autoindex
 
 ```
-docker run -it --rm -v www:/var/www/html -p 80:80 -e LOCATION_AUTOINDEX=true -e LOCATION_INDEX="" thedrhax/environmental-nginx
+docker run -it --rm -v www:/var/www/html -p 80:80 -e LOCATION_AUTOINDEX=true -e LOCATION_INDEX="" thedrhax/nginx-stateless
 ```
 
 ### Static content + PHP (Piwik, ownCloud, etc.)
 
 ```
-docker run -it --rm -v www:/var/www/html -p 80:80 -e FPM=true -e FPM_HOST=your.fpm.host thedrhax/environmental-nginx
+docker run -it --rm -v www:/var/www/html -p 80:80 -e FPM=true -e FPM_HOST=your.fpm.host thedrhax/nginx-stateless
 ```
 
 ### Reverse proxy
 
 ```
-docker run -it --rm -p 80:80 -e PROXY=true -e PROXY_HOST=another.server thedrhax/environmental-nginx
+docker run -it --rm -p 80:80 -e PROXY=true -e PROXY_HOST=another.server thedrhax/nginx-stateless
 ```
 
 ### SSL termination
 
 ```
-docker run -it --rm -v ssl:/ssl -p 443:443 -e SSL=true -e SSL_CERT=/path/to/cert.pem -e SSL_KEY=/ssl/key.pem thedrhax/environmental-nginx
+docker run -it --rm -v ssl:/ssl -p 443:443 -e SSL=true -e SSL_CERT=/path/to/cert.pem -e SSL_KEY=/ssl/key.pem thedrhax/nginx-stateless
 ```
 
 You can also combine SSL termination with all previous examples.
@@ -79,5 +79,5 @@ You can also combine SSL termination with all previous examples.
 You can add custom lines to server{} and location{} blocks by setting `CONFIG_SERVER_*` and `CONFIG_LOCATION_*`. Number of the first line must be **0**.
 
 ```bash
-docker run --it --rm -v www:/var/www/html -p 81:81 -e CONFIG_SERVER_0="listen 81;" thedrhax/environmental-nginx
+docker run --it --rm -v www:/var/www/html -p 81:81 -e CONFIG_SERVER_0="listen 81;" thedrhax/nginx-stateless
 ```

@@ -2,10 +2,18 @@
 
 CONFIG=/etc/nginx/conf.d/default.conf; > $CONFIG
 
-if [ "_$PROXY" = "_true" ] && [ "_$FPM" = "_true" ]; then
-    echo "Do not use both PROXY and FPM at the same time"
-    exit 1
-fi
+set_mode() {
+    if [ ! "$MODE" ]; then
+        export MODE=$1
+    else
+        echo "Do not use both $1 and $MODE in the same location"
+        exit 1
+    fi
+}
+
+[ "_$PROXY" = "_true" ] && set_mode PROXY
+[ "_$UWSGI" = "_true" ] && set_mode UWSGI
+[ "_$FPM" = "_true" ] && set_mode FPM
 
 expand_vars_to_lines() {
     PREFIX=$1
@@ -44,7 +52,12 @@ server {
 
 `expand_vars_to_lines CONFIG_LOCATION "        "`
 
-`[ "_$PROXY" = "_true" ] && cat <<EOF
+`[ "_$MODE" = "_UWSGI" ] && cat <<EOF
+        include uwsgi_params;
+        uwsgi_pass ${UWSGI_HOST}:${UWSGI_PORT};
+`
+
+`[ "_$MODE" = "_PROXY" ] && cat <<EOF
         proxy_set_header Host               \\$host;
         proxy_set_header X-Real-IP          \\$remote_addr;
         proxy_set_header X-Forwarded-For    \\$proxy_add_x_forwarded_for;
@@ -52,7 +65,7 @@ server {
         proxy_pass ${PROXY_PROTO}://${PROXY_HOST};
 `
 
-`[ "_$FPM" = "_true" ] && cat <<EOF
+`[ "_$MODE" = "_FPM" ] && cat <<EOF
         location ~ \.php$ {
             include fastcgi.conf;
             fastcgi_param SCRIPT_FILENAME \\$request_filename;

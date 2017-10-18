@@ -10,6 +10,9 @@ ENV \
     # Reverse proxy
     PROXY=false PROXY_PROTO=http PROXY_HOST=app \
 
+    # uWSGI
+    UWSGI=false UWSGI_HOST=app UWSGI_PORT=9000 \
+
     # SSL termination
     SSL=false SSL_CERT=/ssl/cert.pem SSL_KEY=/ssl/key.pem \
     SSL_TIMEOUT=5m \

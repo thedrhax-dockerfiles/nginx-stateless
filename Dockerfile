@@ -24,7 +24,8 @@ ENV \
 
     # Custom config lines
     CONFIG_SERVER_0="" CONFIG_SERVER_1="" \
-    CONFIG_LOCATION_0="" CONFIG_LOCATION_1=""
+    CONFIG_LOCATION_0="" CONFIG_LOCATION_1="" \
+    CONFIG_GLOBAL_START_0="" CONFIG_GLOBAL_END_0=""
 
 COPY run.sh /run.sh
 

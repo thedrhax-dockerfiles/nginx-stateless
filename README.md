@@ -35,11 +35,26 @@ LOCATION_PATH=/var/www/html
 LOCATION_INDEX="index.php index.html index.htm"
 LOCATION_AUTOINDEX=false
 
+#
 # Custom config lines
+#
+
+# before main `server {}`
+CONFIG_GLOBAL_START_0=""
+CONFIG_GLOBAL_START_1=""
+CONFIG_GLOBAL_START_...=""
+
+# after main `server {}`
+CONFIG_GLOBAL_END_0=""
+CONFIG_GLOBAL_END_1=""
+CONFIG_GLOBAL_END_...=""
+
+# before main `location {}`
 CONFIG_SERVER_0=""
 CONFIG_SERVER_1=""
 CONFIG_SERVER_...=""
 
+# inside main `location {}`
 CONFIG_LOCATION_0=""
 CONFIG_LOCATION_1=""
 CONFIG_LOCATION_...=""
@@ -78,6 +93,18 @@ docker run -it --rm -v ssl:/ssl -p 443:443 -e SSL=true -e SSL_CERT=/path/to/cert
 ```
 
 You can also combine SSL termination with all previous examples.
+
+### Redirect by Host
+
+```
+docker run -it --rm -p 80:80 -e CONFIG_GLOBAL_END_0="server { server_name b.example.com; return 301 \$scheme://a.example.com$request_uri; }" thedrhax/nginx-stateless
+```
+
+# Redirect all unknown Hosts
+
+```
+docker run -it --rm -p 80:80 -e CONFIG_GLOBAL_START_0="server { return 301 \$scheme://a.example.com$request_uri; }" -e CONFIG_SERVER_0="server_name a.example.com;" thedrhax/nginx-stateless
+```
 
 ### Add custom config lines
 

@@ -26,6 +26,8 @@ expand_vars_to_lines() {
 }
 
 cat >> $CONFIG <<EOF
+`expand_vars_to_lines CONFIG_GLOBAL_START "        "`
+
 server {
     listen 80;
 `[ "_$SSL" = "_true" ] && cat <<EOF
@@ -77,6 +79,8 @@ server {
 
     }
 }
+
+`expand_vars_to_lines CONFIG_GLOBAL_END "        "`
 EOF
 
 exec "$@"

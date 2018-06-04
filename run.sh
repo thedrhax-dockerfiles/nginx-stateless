@@ -26,7 +26,7 @@ expand_vars_to_lines() {
 }
 
 cat >> $CONFIG <<EOF
-`expand_vars_to_lines CONFIG_GLOBAL_START "        "`
+`expand_vars_to_lines CONFIG_GLOBAL_START ""`
 
 server {
     listen 80;
@@ -80,7 +80,7 @@ server {
     }
 }
 
-`expand_vars_to_lines CONFIG_GLOBAL_END "        "`
+`expand_vars_to_lines CONFIG_GLOBAL_END ""`
 EOF
 
 exec "$@"
